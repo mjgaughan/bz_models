@@ -11,6 +11,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
+from text_analysis import lemmatize, bow_def, main_analysis 
+
 ys = []
 prototypes = []
 RANDOM_SEED = 1999
@@ -41,12 +43,13 @@ def data_pp(data):
                     target_param = current_param_entry
                     break
             #print(target_param)
-            prototypes.append([datapoint["func_prototype"], target_param])
-            
+            new_datapoint= {"func_prototype": datapoint["func_prototype"], "target_param": target_param, "lemmatized_bow": main_analysis(datapoint["func_prototype"]) }
+            prototypes.append(new_datapoint)
+            #main_analysis(datapoint["func_prototype"]) 
             location += 1
             if location == 3:
                 break
-        
+        print(prototypes)
 
 
 
@@ -62,9 +65,6 @@ def split_data(xs, ys):
     xx_train, xx_vali, yx_train, yx_vali = train_test_split(
         xx_tv, yx_tv, train_size=0.8, shuffle=False, random_state=RANDOM_SEED
     )
-
-
-#TODO: generate a function that can generate more robust features
 
 
 if __name__ == "__main__":
