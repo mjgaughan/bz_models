@@ -54,7 +54,7 @@ def data_pp(data):
             location += 1
             if location == 6:
                 break
-        #print(prototypes)
+        print(prototypes)
 
 
 
