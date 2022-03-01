@@ -52,9 +52,9 @@ def data_pp(data):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 3:
+            if location == 6:
                 break
-        print(prototypes)
+        #print(prototypes)
 
 
 

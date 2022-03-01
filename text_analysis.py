@@ -2,10 +2,11 @@ import nltk
 
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import treebank
-
+from difflib import SequenceMatcher
 #nltk.download('punkt')
 #nltk.download('wordnet')
 #nltk.download('omw-1.4')
+#nltk.download('averaged_perceptron_tagger')
 breaks = ["_", "(", ")"]
 stripped_punctuation = [",", '.', ";", ":", '“', '$', '`']
 
@@ -42,14 +43,25 @@ def get_param_location(definition, param):
             return index
     #print(parameter_list)
     return -1
-#TODO: param len/word len
+# param len/word len
 def param_traits(param):
     param_split = param.split()
     param_name = param_split[-1]
     return (len(param_name))
 #TODO: high value token and similarity matching
 def action_on_sub(definition, param):
-    print("hi")
+    #getting the function name
+    func_name = definition[:definition.find("(")]
+    func_name = func_name.split()[-1]
+    #comparing the param and the func name, this is somewhat of an arbitrary pattern matcher, not attached to it
+    #if there is a better option, can find, just felt like would show it
+    # https://docs.python.org/3/library/difflib.html
+    matcher = SequenceMatcher(None,func_name, param)
+    similarity = matcher.ratio()
+    if similarity > 0.25:
+        func_name_bagged = lemmatize_bagged(func_name)
+        func_name_pos_tagged = nltk.pos_tag(func_name_bagged)
+        print(func_name_pos_tagged)
 #TODO: group function tokens?
 
 def main_analysis(definition, param):
