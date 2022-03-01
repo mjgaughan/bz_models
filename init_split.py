@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from text_analysis import lemmatize, bow_def, main_analysis 
+from text_analysis import lemmatize_bagged, main_analysis, get_return_value, get_param_location, param_traits, action_on_sub
 
 ys = []
 prototypes = []
@@ -42,10 +42,15 @@ def data_pp(data):
                 if current_param_entry != "ignore" and current_param_entry != "u":
                     target_param = current_param_entry
                     break
-            #print(target_param)
-            new_datapoint= {"func_prototype": datapoint["func_prototype"], "target_param": target_param, "lemmatized_bow": main_analysis(datapoint["func_prototype"]) }
+            #creating new features
+            new_datapoint= {"func_prototype": datapoint["func_prototype"], "target_param": target_param, "lemmatized_bow": lemmatize_bagged(datapoint["func_prototype"]) }
+            new_datapoint["func_return_value"] =  get_return_value(datapoint["func_prototype"])
+            new_datapoint["parameter_location"] = get_param_location(datapoint["func_prototype"], target_param)
+            new_datapoint["param_name_len"] = param_traits(target_param)
+            #adding to big set
             prototypes.append(new_datapoint)
-            #main_analysis(datapoint["func_prototype"]) 
+            #for testing
+            action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
             if location == 3:
                 break
