@@ -12,6 +12,7 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 from text_analysis import lemmatize_bagged, main_analysis, get_return_value, get_param_location, param_traits, action_on_sub
+from body_analysis import body_len, find_left_invoke
 
 ys = []
 prototypes = []
@@ -47,6 +48,7 @@ def data_pp(data):
             new_datapoint["func_return_value"] =  get_return_value(datapoint["func_prototype"])
             new_datapoint["parameter_location"] = get_param_location(datapoint["func_prototype"], target_param)
             new_datapoint["param_name_len"] = param_traits(target_param)
+            #new_datapoint["relevant_action"] = action_on_sub(datapoint["func_prototype"], target_param)
             #adding to big set
             prototypes.append(new_datapoint)
             #for testing
@@ -54,7 +56,7 @@ def data_pp(data):
             location += 1
             if location == 6:
                 break
-        #print(prototypes)
+        print(prototypes)
 
 
 
@@ -74,5 +76,5 @@ def split_data(xs, ys):
 
 if __name__ == "__main__":
     data_pp("full_shuffle_labeled.csv")
-
+    #temp_final_labeled_body_shuffled.csv
 

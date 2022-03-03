@@ -3,16 +3,21 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import treebank
 from difflib import SequenceMatcher
+from nltk.corpus import brown
 #nltk.download('punkt')
 #nltk.download('wordnet')
 #nltk.download('omw-1.4')
 #nltk.download('averaged_perceptron_tagger')
+nltk.download('brown')
 breaks = ["_", "(", ")"]
 stripped_punctuation = [",", '.', ";", ":", '“', '$', '`']
+
+action_words = ["enable", "write", "edit", "rename", "update", "change", "switch", "init", "lock"]
 
 '''
 this function takes the function definition and spits out a lemmatized bag of words
 '''
+
 def lemmatize_bagged(definition):
     working_cor = ""
     for letter in definition:
@@ -53,6 +58,7 @@ def param_traits(param):
     param_split = param.split()
     param_name = param_split[-1]
     return (len(param_name))
+
 '''
 high value token and similarity matching
 the thought is that if the function name refers to the parameter name then the parameter is key to the function
@@ -67,11 +73,18 @@ def action_on_sub(definition, param):
     # https://docs.python.org/3/library/difflib.html
     matcher = SequenceMatcher(None,func_name, param)
     similarity = matcher.ratio()
+    #brown_tagged_sents = brown.tagged_sents()
+    #brown_sents = brown.sents()
+    #unigram_tagger = nltk.UnigramTagger(brown_tagged_sents)
     if similarity > 0.25:
         #there are a couple different ways to do this, OTS PoS taggers didn't work super well so just having it check against a preselected wordlist atm
         func_name_bagged = lemmatize_bagged(func_name)
-        func_name_pos_tagged = nltk.pos_tag(func_name_bagged)
-        print(func_name_pos_tagged)
+        #func_name_pos_tagged = nltk.pos_tag(func_name_bagged)
+        for word in func_name_bagged:
+            if word in action_words:
+                #print(func_name_pos_tagged)
+                return True
+    return False
 
 
 def main_analysis(definition, param):
