@@ -4,20 +4,23 @@ import csv
 
 
 #how long/detailed is the body of the function
+#might need to be more sophisticated in a bit but for now this works
 def body_len(body):
     return len(body)
 
+'''
+this function is to identify if the parameter is invoked on the left side of an assignment, meaning that it's value is being assigned
+'''
 def find_left_invoke(body, param):
     body_in_rows = body.split("\n")
     param_name = param.split()[-1] 
     if "*" in param_name:
-        #checking if the pointer is being used? might need to get a bit more sophisticated on this and look at how pointers are invoked
+        #checking if the pointer is being used? 
         param_name = param_name[1:]
     for line in body_in_rows:
         if param_name in line and "=" in line:
             #if the param is being assigned, check w syntax location and whether the thing is standing alone
             if (line.index(param_name) < line.index("=")) and (param_name + " ") in line:
-                #print("bozo")
                 return True
     return False
 
