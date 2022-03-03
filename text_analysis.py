@@ -11,18 +11,27 @@ from nltk.corpus import brown
 nltk.download('brown')
 breaks = ["_", "(", ")"]
 stripped_punctuation = [",", '.', ";", ":", '“', '$', '`']
+
 action_words = ["enable", "write", "edit", "rename", "update", "change", "switch", "init", "lock"]
+
+'''
+this function takes the function definition and spits out a lemmatized bag of words
+'''
 
 def lemmatize_bagged(definition):
     working_cor = ""
     for letter in definition:
+        #there are some special break characters used to break up words and it's easier for tokenizing if they're just spaces
         if letter in breaks:
             working_cor += " "
         else:
             working_cor += letter
+    #tokenize the words into a bag
     bag = nltk.word_tokenize(working_cor)
+    #lemmatize them
     lemmatizer = WordNetLemmatizer()
     minimized_bag = []
+    #also toss out any punctuation
     for word in bag:
         if word not in stripped_punctuation:
             minimized_bag.append(lemmatizer.lemmatize(word))
@@ -34,6 +43,7 @@ def get_return_value(definition):
     return definition_split[0]
 
 # location in the param list
+# the location of the parameter in the list of parameter in the function definition may be important
 def get_param_location(definition, param):
     begin = definition.find("(")
     end = definition.find(")")
@@ -41,16 +51,19 @@ def get_param_location(definition, param):
     parameter_list = parameters.split(",")
     for index in range(len(parameter_list)):
         if param in parameter_list[index]:
-            #print(index)
             return index
-    #print(parameter_list)
     return -1
-# param len/word len
+# the length of the syntax of the parameter name
 def param_traits(param):
     param_split = param.split()
     param_name = param_split[-1]
     return (len(param_name))
-#high value token and similarity matching
+
+'''
+high value token and similarity matching
+the thought is that if the function name refers to the parameter name then the parameter is key to the function
+furthermore, if the function name contains an action word that infers mutability, that could be a key clue
+'''
 def action_on_sub(definition, param):
     #getting the function name
     func_name = definition[:definition.find("(")]
@@ -64,6 +77,7 @@ def action_on_sub(definition, param):
     #brown_sents = brown.sents()
     #unigram_tagger = nltk.UnigramTagger(brown_tagged_sents)
     if similarity > 0.25:
+        #there are a couple different ways to do this, OTS PoS taggers didn't work super well so just having it check against a preselected wordlist atm
         func_name_bagged = lemmatize_bagged(func_name)
         #func_name_pos_tagged = nltk.pos_tag(func_name_bagged)
         for word in func_name_bagged:
@@ -71,13 +85,9 @@ def action_on_sub(definition, param):
                 #print(func_name_pos_tagged)
                 return True
     return False
-#TODO: group function tokens?
+
 
 def main_analysis(definition, param):
     get_param_location(definition, param)
-    #bagged = bow_def(definition)
-    #lemmatized_bag = lemmatize(bagged)
-    #return lemmatized_bag
-    
-    #get_return_value(definition)
+
 
