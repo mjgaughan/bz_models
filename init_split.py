@@ -24,7 +24,7 @@ numberer = DictVectorizer(sparse=False)
 scaling = StandardScaler()
 #hypothesis: while the model will be more efficient than other approaches, it will have difficulty labeling in such a constrained context
 
-def data_pp(data):
+def data_pp(data, body):
     with open(data) as fp:
         location = 0
         rows = csv.reader(fp)
@@ -57,13 +57,17 @@ def data_pp(data):
             new_datapoint["parameter_location"] = get_param_location(datapoint["func_prototype"], target_param)
             new_datapoint["param_name_len"] = param_traits(target_param)
             new_datapoint["immutable"] = immutable
+            if body:
+                new_datapoint["body_length"] = body_len(datapoint["func_body_text"])
+                new_datapoint["left_of_eq"] = find_left_invoke(datapoint["func_body_text"], target_param)
+
             #new_datapoint["relevant_action"] = action_on_sub(datapoint["func_prototype"], target_param)
             #adding to big set
             prototypes.append(new_datapoint)
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 20:
+            if location == 100:
                 break
         #print(prototypes)
         le = LabelEncoder()
@@ -85,23 +89,27 @@ def split_data(xs):
     f_train, f_validate = train_test_split(
         f_tv, train_size=0.66, shuffle=False, random_state=RANDOM_SEED
     )
-    '''
-    bow_to_column = TfidfVectorizer(
+    
+    func_to_column = TfidfVectorizer(
         strip_accents="unicode", lowercase=True, stop_words="english", max_df=0.5
     )
 
-    bow_to_column.fit(f_train["lemmatized_bow"])
+    func_to_column.fit(f_train["func_prototype"].to_list())
     
-    f_train_bow = bow_to_column.transform(f_train["lemmatized_bow"].to_list())
-    f_validate_bow = bow_to_column.transform(f_validate["lemmatized_bow"].to_list())
-    f_test_bow = bow_to_column.transform(f_test["lemmatized_bow"].to_list())
+    f_train_bow = func_to_column.transform(f_train["func_prototype"].to_list())
+    f_validate_bow = func_to_column.transform(f_validate["func_prototype"].to_list())
+    f_test_bow = func_to_column.transform(f_test["func_prototype"].to_list())
 
     del f_train["lemmatized_bow"]
-    f_train["lemmatized_bow"] = f_train_param
+    del f_validate["lemmatized_bow"]
+    del f_test["lemmatized_bow"]
+    #f_train["func_col"] = f_train_bow
 
+    #pd.options.display.max_colwidth = 200
+    print(f_train_bow)
+    print("CUTOFF")
+    print(f_validate_bow)
     
-    print(f_train.head())
-    '''
     y_train, xx_train = prepare_data(f_train, fit=True)
     y_vali, xx_vali = prepare_data(f_validate)
     y_test, xx_test = prepare_data(f_test) 
@@ -120,6 +128,7 @@ def prepare_data(
     # use fit_transform only on training data:
     if fit:
         return y, scaling.fit_transform(numberer.fit_transform(df.to_dict("records")))
+        #return y, scaling.fit_transform(df.to_dict("records"))
     # use transform on vali & test:
     return y, scaling.transform(
         numberer.transform(df.to_dict("records"))
@@ -127,7 +136,9 @@ def prepare_data(
 
 
 if __name__ == "__main__":
-    preprocessed = data_pp("full_shuffle_labeled.csv")
+    preprocessed = data_pp("full_shuffle_labeled.csv", False)
+    #the below is for implementing checks of the body features generated, so far performing worse
+    #preprocessed = data_pp("../bz_func_declarations/temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     print(features.head())
     splits = split_data(features)
