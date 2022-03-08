@@ -1,0 +1,129 @@
+func_prototype,est_line,file,in_macro,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,immutable,label_time,id,prototype_location_gh,function_location_gh
+"
+void udp_v6_rehash(struct sock *sk);",15,../linux/net/ipv6/udp_impl.h,FALSE,struct sock *sk,u,u,u,u,u,u,u,u,u,FALSE,0:00:01,,https://github.com/torvalds/linux/blob/v5.16/net/ipv6/udp_impl.h#L16,https://github.com/torvalds/linux/blob/v5.16/net/ipv6/udp.c#L93
+"int nvkm_vmm_pfn_map(struct nvkm_vmm *, u8 page, u64 addr, u64 size, u64 *pfn);",185,../linux/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.h,FALSE,ignore,ignore,ignore,ignore,u64 *pfn,u,u,u,u,u,FALSE,0:00:01,1,https://github.com/torvalds/linux/blob/v5.16/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.h#L186,https://github.com/torvalds/linux/blob/v5.16/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmm.c#L1207
+"
+void r8712_SwitchBandwidth(struct _adapter *pAdapter);",262,../linux/drivers/staging/rtl8712/rtl871x_mp.h,FALSE,struct _adapter *pAdapter,u,u,u,u,u,u,u,u,u,TRUE,0:00:01,2,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8712/rtl871x_mp.h#L263,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8712/rtl871x_mp.c#L333
+"
+void video_mux(struct cx231xx *dev, int index);",913,../linux/drivers/media/usb/cx231xx/cx231xx.h,FALSE,struct cx231xx *dev,ignore,u,u,u,u,u,u,u,u,TRUE,0:00:02,3,https://github.com/torvalds/linux/blob/v5.16/drivers/media/usb/cx231xx/cx231xx.h#L914,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8712/rtl871x_mp.c#L333
+"
+void tipc_bcast_dec_bearer_dst_cnt(struct net *net, int bearer_id);",86,../linux/net/tipc/bcast.h,FALSE,struct net *net,ignore,u,u,u,u,u,u,u,u,FALSE,0:00:01,4,https://github.com/torvalds/linux/blob/v5.16/net/tipc/bcast.h#L87,https://github.com/torvalds/linux/blob/v5.16/net/tipc/bcast.c#L157
+"
+int ubi_io_read_vid_hdr(struct ubi_device *ubi, int pnum,
+			struct ubi_vid_io_buf *vidb, int verbose);",935,../linux/drivers/mtd/ubi/ubi.h,FALSE,ignore,int pnum,ignore,ignore,u,u,u,u,u,u,TRUE,0:00:01,5,https://github.com/torvalds/linux/blob/v5.16/drivers/mtd/ubi/ubi.h#L935,https://github.com/torvalds/linux/blob/v5.16/drivers/mtd/ubi/io.c#L966
+"int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
+		   u8 link_idx, struct smc_init_info *ini);",501,../linux/net/smc/smc_core.h,FALSE,ignore,struct smc_link *lnk,ignore,ignore,u,u,u,u,u,u,FALSE,0:00:01,6,https://github.com/torvalds/linux/blob/v5.16/net/smc/smc_core.h#L501,https://github.com/torvalds/linux/blob/v5.16/net/smc/smc_core.c#L733
+"
+void ReadAdapterInfo8188EU(struct adapter *Adapter);",116,../linux/drivers/staging/r8188eu/include/hal_intf.h,FALSE,struct adapter *Adapter,u,u,u,u,u,u,u,u,u,FALSE,0:00:01,7,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/r8188eu/include/hal_intf.h#L117,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/r8188eu/hal/usb_halinit.c#L1082
+"int ocfs2_lock_global_qf(struct ocfs2_mem_dqinfo *oinfo, int ex);",110,../linux/fs/ocfs2/quota.h,FALSE,ignore,int ex,u,u,u,u,u,u,u,u,TRUE,0:00:02,8,https://github.com/torvalds/linux/blob/v5.16/fs/ocfs2/quota.h#L111,https://github.com/torvalds/linux/blob/v5.16/fs/ocfs2/quota_global.c#L298
+"
+unsigned long ucs2_as_utf8(u8 *dest, const ucs2_char_t *src,
+			   unsigned long maxlength);",16,../linux/include/linux/ucs2_string.h,FALSE,u8 *dest,ignore,ignore,u,u,u,u,u,u,u,FALSE,0:00:01,9,https://github.com/torvalds/linux/blob/v5.16/include/linux/ucs2_string.h#L16,https://github.com/torvalds/linux/blob/v5.16/lib/ucs2_string.c#L83
+"
+void intel_uncore_runtime_resume(struct intel_uncore *uncore);",228,../linux/drivers/gpu/drm/i915/intel_uncore.h,FALSE,struct intel_uncore *uncore,u,u,u,u,u,u,u,u,u,TRUE,0:00:02,10,https://github.com/torvalds/linux/blob/v5.16/drivers/gpu/drm/i915/intel_uncore.h#L229,https://github.com/torvalds/linux/blob/v5.16/drivers/gpu/drm/i915/intel_uncore.c#L608
+"
+endif
+void pcie_port_device_remove(struct pci_dev *dev);",119,../linux/drivers/pci/pcie/portdrv.h,FALSE,struct pci_dev *dev,u,u,u,u,u,u,u,u,u,TRUE,0:00:01,11,https://github.com/torvalds/linux/blob/v5.16/drivers/pci/pcie/portdrv.h#L120,https://github.com/torvalds/linux/blob/v5.16/drivers/pci/pcie/portdrv_core.c#L505
+"
+int btrfs_rmap_block(struct btrfs_fs_info *fs_info, u64 chunk_start,
+		       struct block_device *bdev, u64 physical, u64 **logical,
+		       int *naddrs, int *stripe_len);",304,../linux/fs/btrfs/block-group.h,FALSE,ignore,ignore,ignore,ignore,ignore,ignore,int *stripe_len,u,u,u,FALSE,0:00:01,12,https://github.com/torvalds/linux/blob/v5.16/fs/btrfs/block-group.h#L303,https://github.com/torvalds/linux/blob/v5.16/fs/btrfs/block-group.c#L1746
+"
+int f2fs_write_single_data_page(struct page *page, int *submitted,
+				struct bio **bio, sector_t *last_block,
+				struct writeback_control *wbc,
+				enum iostat_type io_type,
+				int compr_blocks, bool allow_balance);",3638,../linux/fs/f2fs/f2fs.h,FALSE,ignore,ignore,ignore,sector_t *last_block,ignore,ignore,ignore,ignore,u,u,TRUE,0:00:03,13,https://github.com/torvalds/linux/blob/v5.16/fs/f2fs/f2fs.h#L3635,https://github.com/torvalds/linux/blob/v5.16/fs/f2fs/data.c#L2771
+"
+int em28xx_suspend_extension(struct em28xx *dev);",840,../linux/drivers/media/usb/em28xx/em28xx.h,FALSE,struct em28xx *dev,u,u,u,u,u,u,u,u,u,TRUE,0:00:01,14,https://github.com/torvalds/linux/blob/v5.16/drivers/media/usb/em28xx/em28xx.h#L841,https://github.com/torvalds/linux/blob/v5.16/drivers/media/usb/em28xx/em28xx-core.c#L1150
+"int tracepoint_printk_sysctl(struct ctl_table *table, int write,
+			     void *buffer, size_t *lenp, loff_t *ppos);",1102,../linux/include/linux/ftrace.h,FALSE,struct ctl_table *table,ignore,ignore,ignore,ignore,u,u,u,u,u,TRUE,0:00:03,15,https://github.com/torvalds/linux/blob/v5.16/include/linux/ftrace.h#L1102,https://github.com/torvalds/linux/blob/v5.16/kernel/trace/trace.c#L2851
+"int mtd_ooblayout_ecc(struct mtd_info *mtd, int section,
+		      struct mtd_oob_region *oobecc);",429,../linux/include/linux/mtd/mtd.h,FALSE,struct mtd_info *mtd,ignore,ignore,u,u,u,u,u,u,u,FALSE,0:00:01,16,https://github.com/torvalds/linux/blob/v5.16/include/linux/mtd/mtd.h#L429,https://github.com/torvalds/linux/blob/v5.16/drivers/mtd/mtdcore.c#L1638
+"
+ZSTDLIB_API size_t ZSTD_DCtx_loadDictionary_byReference(ZSTD_DCtx* dctx, const void* dict, size_t dictSize);",1927,../linux/include/linux/zstd_lib.h,FALSE,ignore,const void* dict,ignore,u,u,u,u,u,u,u,TRUE,0:00:01,17,https://github.com/torvalds/linux/blob/v5.16/include/linux/zstd_lib.h#L1928,https://github.com/torvalds/linux/blob/v5.16/lib/zstd/decompress/zstd_decompress.c#L1481
+"ifdef CONFIG_BINARY_PRINTF
+void seq_bprintf(struct seq_file *m, const char *f, const u32 *binary);",172,../linux/include/linux/seq_file.h,FALSE,ignore,ignore,const u32 *binary,u,u,u,u,u,u,u,FALSE,0:00:01,18,https://github.com/torvalds/linux/blob/v5.16/include/linux/seq_file.h#L173,https://github.com/torvalds/linux/blob/v5.16/fs/seq_file.c#L412
+"
+u32 cx231xx_get_video_line(struct cx231xx *dev, struct cx231xx_dmaqueue *dma_q,
+			   u8 sav_eav, u8 *p_buffer, u32 buffer_size);",811,../linux/drivers/media/usb/cx231xx/cx231xx.h,FALSE,struct cx231xx *dev,ignore,ignore,ignore,ignore,u,u,u,u,u,TRUE,0:00:02,19,https://github.com/torvalds/linux/blob/v5.16/drivers/media/usb/cx231xx/cx231xx.h#L811,https://github.com/torvalds/linux/blob/v5.16/drivers/media/usb/cx231xx/cx231xx-video.c#L497
+"
+void b43legacy_phy_lo_mark_all_unused(struct b43legacy_wldev *dev);",187,../linux/drivers/net/wireless/broadcom/b43legacy/phy.h,FALSE,struct b43legacy_wldev *dev,u,u,u,u,u,u,u,u,u,FALSE,0:00:01,20,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/broadcom/b43legacy/phy.h#L188,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/broadcom/b43legacy/phy.c#L1712
+"
+int fjes_hw_stop_debug(struct fjes_hw *);",354,../linux/drivers/net/fjes/fjes_hw.h,FALSE,struct fjes_hw *,u,u,u,u,u,u,u,u,u,FALSE,0:00:01,21,https://github.com/torvalds/linux/blob/v5.16/drivers/net/fjes/fjes_hw.h#L355,https://github.com/torvalds/linux/blob/v5.16/drivers/net/fjes/fjes_hw.c#L1249
+"
+int iwlagn_suspend(struct iwl_priv *priv, struct cfg80211_wowlan *wowlan);",138,../linux/drivers/net/wireless/intel/iwlwifi/dvm/agn.h,FALSE,struct iwl_priv *priv,ignore,u,u,u,u,u,u,u,u,FALSE,0:00:01,22,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/intel/iwlwifi/dvm/agn.h#L139,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/intel/iwlwifi/dvm/lib.c#L1034
+"
+void ima_putc(struct seq_file *m, void *data, int datalen);",151,../linux/security/integrity/ima/ima.h,FALSE,ignore,void *data,ignore,u,u,u,u,u,u,u,FALSE,0:00:01,23,https://github.com/torvalds/linux/blob/v5.16/security/integrity/ima/ima.h#L152,https://github.com/torvalds/linux/blob/v5.16/security/integrity/ima/ima_fs.c#L113
+"int mwifiex_add_card(void *card, struct completion *fw_done,
+		     struct mwifiex_if_ops *if_ops, u8 iface_type,
+		     struct device *dev);",1485,../linux/drivers/net/wireless/marvell/mwifiex/main.h,FALSE,ignore,ignore,ignore,u8 iface_type,ignore,u,u,u,u,u,FALSE,0:00:01,24,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/marvell/mwifiex/main.h#L1484,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/marvell/mwifiex/main.c#L1668
+"
+void qedi_reset_host_mtu(struct qedi_ctx *qedi, u16 mtu);",58,../linux/drivers/scsi/qedi/qedi_gbl.h,FALSE,struct qedi_ctx *qedi,ignore,u,u,u,u,u,u,u,u,FALSE,0:00:01,25,https://github.com/torvalds/linux/blob/v5.16/drivers/scsi/qedi/qedi_gbl.h#L59,https://github.com/torvalds/linux/blob/v5.16/drivers/scsi/qedi/qedi_main.c#L2000
+"
+int cx25840_ir_irq_handler(struct v4l2_subdev *sd, u32 status, bool *handled);",189,../linux/drivers/media/i2c/cx25840/cx25840-core.h,FALSE,ignore,u32 status,ignore,u,u,u,u,u,u,u,TRUE,0:00:01,26,https://github.com/torvalds/linux/blob/v5.16/drivers/media/i2c/cx25840/cx25840-core.h#L190,https://github.com/torvalds/linux/blob/v5.16/drivers/media/i2c/cx25840/cx25840-ir.c#L508
+"
+int vidioc_s_fmt_vid_out_mplane(struct file *file, void *priv, struct v4l2_format *f);",19,../linux/drivers/media/test-drivers/vivid/vivid-vid-out.h,FALSE,ignore,void *priv,ignore,u,u,u,u,u,u,u,TRUE,0:00:02,27,https://github.com/torvalds/linux/blob/v5.16/drivers/media/test-drivers/vivid/vivid-vid-out.h#L20,https://github.com/torvalds/linux/blob/v5.16/drivers/media/test-drivers/vivid/vivid-vid-out.c#L595
+"void nfs_fattr_init_names(struct nfs_fattr *fattr,
+		struct nfs4_string *owner_name,
+		struct nfs4_string *group_name);",55,../linux/fs/nfs/nfs4idmap.h,FALSE,ignore,"
+		struct nfs4_string *owner_name",ignore,u,u,u,u,u,u,u,FALSE,0:00:01,28,https://github.com/torvalds/linux/blob/v5.16/fs/nfs/nfs4idmap.h#L54,https://github.com/torvalds/linux/blob/v5.16/fs/nfs/nfs4idmap.c#L89
+"int ath6kl_wmi_send_probe_response_cmd(struct wmi *wmi, u8 if_idx, u32 freq,
+				       const u8 *dst, const u8 *data,
+				       u16 data_len);",2708,../linux/drivers/net/wireless/ath/ath6kl/wmi.h,FALSE,struct wmi *wmi,ignore,ignore,ignore,ignore,ignore,u,u,u,u,FALSE,0:00:01,29,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/ath/ath6kl/wmi.h#L2707,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/ath/ath6kl/wmi.c#L3746
+"
+int llc_sap_ev_rx_ui(struct llc_sap *sap, struct sk_buff *skb);",56,../linux/include/net/llc_s_ev.h,FALSE,struct llc_sap *sap,ignore,u,u,u,u,u,u,u,u,FALSE,0:00:01,30,https://github.com/torvalds/linux/blob/v5.16/include/net/llc_s_ev.h#L57,https://github.com/torvalds/linux/blob/v5.16/net/llc/llc_s_ev.c#L31
+"
+void ar9003_hw_set_chain_masks(struct ath_hw *ah, u8 rx, u8 tx);",1131,../linux/drivers/net/wireless/ath/ath9k/hw.h,FALSE,struct ath_hw *ah,ignore,ignore,u,u,u,u,u,u,u,FALSE,0:00:01,31,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/ath/ath9k/hw.h#L1132,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/ath/ath9k/ar9003_phy.c#L676
+"
+void hw_atl_tdm_cpu_id_set(struct aq_hw_s *aq_hw, u32 cpuid, u32 dca);",581,../linux/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_llh.h,FALSE,struct aq_hw_s *aq_hw,ignore,ignore,u,u,u,u,u,u,u,TRUE,0:00:01,32,https://github.com/torvalds/linux/blob/v5.16/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_llh.h#L582,https://github.com/torvalds/linux/blob/v5.16/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_llh.c#L1241
+"
+void efx_port_dummy_op_void(struct efx_nic *efx);",62,../linux/drivers/net/ethernet/sfc/efx_common.h,FALSE,struct efx_nic *efx,u,u,u,u,u,u,u,u,u,FALSE,0:00:01,33,https://github.com/torvalds/linux/blob/v5.16/drivers/net/ethernet/sfc/efx_common.h#L63,https://github.com/torvalds/linux/blob/v5.16/drivers/net/ethernet/sfc/efx_common.c#L969
+"
+void intel_ddi_fdi_post_disable(struct intel_atomic_state *state,
+				struct intel_encoder *intel_encoder,
+				const struct intel_crtc_state *old_crtc_state,
+				const struct drm_connector_state *old_conn_state);",29,../linux/drivers/gpu/drm/i915/display/intel_ddi.h,FALSE,ignore,ignore,ignore,"
+                                const struct drm_connector_state *old_conn_state",u,u,u,u,u,u,TRUE,0:00:02,34,https://github.com/torvalds/linux/blob/v5.16/drivers/gpu/drm/i915/display/intel_ddi.h#L27,https://github.com/torvalds/linux/blob/v5.16/drivers/gpu/drm/i915/display/intel_ddi.c#L2869
+"
+void memunmap(void *addr);",146,../linux/include/linux/io.h,FALSE,void *addr,u,u,u,u,u,u,u,u,u,TRUE,0:00:01,35,https://github.com/torvalds/linux/blob/v5.16/include/linux/io.h#L147,https://github.com/torvalds/linux/blob/v5.16/kernel/iomem.c#L122
+"
+int nfs_mknod(struct user_namespace *, struct inode *, struct dentry *, umode_t,
+	      dev_t);",385,../linux/fs/nfs/internal.h,FALSE,ignore,ignore,ignore,ignore,"
+	      dev_t",u,u,u,u,u,FALSE,0:00:01,36,https://github.com/torvalds/linux/blob/v5.16/fs/nfs/internal.h#L385,https://github.com/torvalds/linux/blob/v5.16/fs/nfs/dir.c#L2125
+"
+int lapb_data_transmit(struct lapb_cb *lapb, struct sk_buff *);",116,../linux/include/net/lapb.h,FALSE,ignore,struct sk_buff *,u,u,u,u,u,u,u,u,FALSE,0:00:01,37,https://github.com/torvalds/linux/blob/v5.16/include/net/lapb.h#L117,https://github.com/torvalds/linux/blob/v5.16/net/lapb/lapb_iface.c#L442
+"void rtw_set_ps_mode(struct adapter *adapter, u8 ps_mode, u8 smart_ps,
+		     u8 bcn_ant_mode);",119,../linux/drivers/staging/r8188eu/include/rtw_pwrctrl.h,FALSE,ignore,u8 ps_mode,ignore,ignore,u,u,u,u,u,u,TRUE,0:00:01,38,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8723bs/include/rtw_pwrctrl.h#L278,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8723bs/core/rtw_pwrctrl.c#L346
+"
+int wl1271_acx_mem_map(struct wl1271 *wl,
+		       struct acx_header *mem_map, size_t len);",1036,../linux/drivers/net/wireless/ti/wlcore/acx.h,FALSE,struct wl1271 *wl,ignore,ignore,u,u,u,u,u,u,u,FALSE,0:00:01,39,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/ti/wlcore/acx.h#L1036,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/ti/wlcore/acx.c#L143
+"
+bool vmci_is_context_owner(u32 context_id, kuid_t uid);",39,../linux/include/linux/vmw_vmci_api.h,FALSE,ignore,kuid_t uid,u,u,u,u,u,u,u,u,TRUE,0:00:01,40,https://github.com/torvalds/linux/blob/v5.16/include/linux/vmw_vmci_api.h#L40,https://github.com/torvalds/linux/blob/v5.16/drivers/misc/vmw_vmci/vmci_context.c#L1202
+"
+int __v4l2_ctrl_modify_range(struct v4l2_ctrl *ctrl,
+			     s64 min, s64 max, u64 step, s64 def);",901,../linux/include/media/v4l2-ctrls.h,FALSE,ignore,ignore,ignore,u64 step,ignore,u,u,u,u,u,TRUE,0:00:01,41,https://github.com/torvalds/linux/blob/v5.16/include/media/v4l2-ctrls.h#L901,https://github.com/torvalds/linux/blob/v5.16/drivers/media/v4l2-core/v4l2-ctrls-api.c#L883
+"void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
+			const struct iwl_fw *fw,
+			const struct iwl_fw_runtime_ops *ops, void *ops_ctx,
+			const struct iwl_dump_sanitize_ops *sanitize_ops,
+			void *sanitize_ctx,
+			struct dentry *dbgfs_dir);",168,../linux/drivers/net/wireless/intel/iwlwifi/fw/runtime.h,FALSE,ignore,ignore,ignore,ignore,ignore,ignore,ignore,"
+			struct dentry *dbgfs_dir",u,u,TRUE,0:00:01,42,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/intel/iwlwifi/fw/runtime.h#L164,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/intel/iwlwifi/fw/init.c#L16
+"
+void bss_cap_update_on_sta_join(struct adapter *padapter, struct sta_info *psta);",28,../linux/drivers/staging/rtl8723bs/include/rtw_ap.h,FALSE,ignore,struct sta_info *psta,u,u,u,u,u,u,u,u,FALSE,0:00:01,43,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8723bs/include/rtw_ap.h#L29,https://github.com/torvalds/linux/blob/v5.16/drivers/staging/rtl8723bs/core/rtw_ap.c#L1703
+"
+void hw_atl_itr_irq_map_en_tx_set(struct aq_hw_s *aq_hw, u32 irq_map_en_tx,
+				  u32 tx);",124,../linux/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_llh.h,FALSE,ignore,u32 irq_map_en_tx,ignore,u,u,u,u,u,u,u,TRUE,0:00:01,44,https://github.com/torvalds/linux/blob/v5.16/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_llh.h#L124,https://github.com/torvalds/linux/blob/v5.16/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_llh.c#L173
+"
+void mc13xxx_unlock(struct mc13xxx *mc13xxx);",13,../linux/include/linux/mfd/mc13xxx.h,FALSE,struct mc13xxx *mc13xxx,u,u,u,u,u,u,u,u,u,TRUE,0:00:01,45,https://github.com/torvalds/linux/blob/v5.16/include/linux/mfd/mc13xxx.h#L14,https://github.com/torvalds/linux/blob/v5.16/drivers/mfd/mc13xxx-core.c#L61
+"
+int nd_pmem_namespace_label_update(struct nd_region *nd_region,
+		struct nd_namespace_pmem *nspm, resource_size_t size);",225,../linux/drivers/nvdimm/label.h,FALSE,ignore,ignore,resource_size_t size,u,u,u,u,u,u,u,TRUE,0:00:01,46,https://github.com/torvalds/linux/blob/v5.16/drivers/nvdimm/label.h#L225,https://github.com/torvalds/linux/blob/v5.16/drivers/nvdimm/label.c#L1380
+"
+int hugetlb_mempolicy_sysctl_handler(struct ctl_table *, int, void *, size_t *,
+		loff_t *);",133,../linux/include/linux/hugetlb.h,FALSE,ignore,ignore,ignore,ignore,"
+		loff_t *",u,u,u,u,u,FALSE,0:00:01,47,https://github.com/torvalds/linux/blob/v5.16/include/linux/hugetlb.h#L133,https://github.com/torvalds/linux/blob/v5.16/mm/hugetlb.c#L4371
+"
+void efuse_shadow_read(struct ieee80211_hw *hw, u8 type,
+		       u16 offset, u32 *value);",81,../linux/drivers/net/wireless/realtek/rtlwifi/efuse.h,FALSE,ignore,ignore,ignore,u32 *value,u,u,u,u,u,u,FALSE,0:00:01,48,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/realtek/rtlwifi/efuse.h#L81,https://github.com/torvalds/linux/blob/v5.16/drivers/net/wireless/realtek/rtlwifi/efuse.c#L386
