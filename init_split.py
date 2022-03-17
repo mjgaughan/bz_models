@@ -60,14 +60,17 @@ def data_pp(data, body):
             if body:
                 new_datapoint["body_length"] = body_len(datapoint["func_body_text"])
                 new_datapoint["left_of_eq"] = find_left_invoke(datapoint["func_body_text"], target_param)
-
+                #print(new_datapoint["body_length"])
+            for word in new_datapoint["lemmatized_bow"]:
+                    new_datapoint["func_dec: " + word] = 1
+                    #print(word)
             #new_datapoint["relevant_action"] = action_on_sub(datapoint["func_prototype"], target_param)
             #adding to big set
             prototypes.append(new_datapoint)
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 100:
+            if location == 10000:
                 break
         #print(prototypes)
         le = LabelEncoder()
@@ -96,9 +99,19 @@ def split_data(xs):
 
     func_to_column.fit(f_train["func_prototype"].to_list())
     
+    different_data_sets =  [f_train, f_validate, f_test]
+    '''
+    for dataset in different_data_sets:
+        for bag in dataset["lemmatized_bow"]:
+            #dataset["funcdec: " + word] = 1
+            for word in bag:
+                dataset["func_dec: " + word] = 1
+    
+
     f_train_bow = func_to_column.transform(f_train["func_prototype"].to_list())
     f_validate_bow = func_to_column.transform(f_validate["func_prototype"].to_list())
     f_test_bow = func_to_column.transform(f_test["func_prototype"].to_list())
+    '''
 
     del f_train["lemmatized_bow"]
     del f_validate["lemmatized_bow"]
@@ -106,9 +119,9 @@ def split_data(xs):
     #f_train["func_col"] = f_train_bow
 
     #pd.options.display.max_colwidth = 200
-    print(f_train_bow)
-    print("CUTOFF")
-    print(f_validate_bow)
+    #print(f_train_bow)
+    #print("CUTOFF")
+    #print(f_validate_bow)
     
     y_train, xx_train = prepare_data(f_train, fit=True)
     y_vali, xx_vali = prepare_data(f_validate)
@@ -136,10 +149,15 @@ def prepare_data(
 
 
 if __name__ == "__main__":
-    preprocessed = data_pp("full_shuffle_labeled.csv", False)
+    #preprocessed = data_pp("full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    #preprocessed = data_pp("../bz_func_declarations/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../bz_func_declarations/temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
+    
+    #get the pd.df to replace NaN
+    print(features.head())
+    #features.replace(NaN, 0)
+    features.fillna(0, inplace=True)
     print(features.head())
     splits = split_data(features)
     
