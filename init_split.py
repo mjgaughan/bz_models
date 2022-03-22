@@ -13,6 +13,10 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier, Perceptron
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_selection import SelectPercentile
+from sklearn.feature_selection import f_classif
+from sklearn.experimental import enable_halving_search_cv  # noqa
+from sklearn.model_selection import HalvingGridSearchCV
 
 from text_analysis import lemmatize_bagged, main_analysis, get_return_value, get_param_location, param_traits, action_on_sub
 from body_analysis import body_len, find_left_invoke
@@ -172,15 +176,27 @@ if __name__ == "__main__":
     #see if anything else needs to happen at this junctur
     #print(x_vali)
     #print(y_vali)
+    print(x_train.shape)
+    feature_op = SelectPercentile(f_classif, percentile=85)
+    x_train_new = feature_op.fit_transform(x_train, y_train)
     print(x_vali)
-    
+    x_vali_new = feature_op.transform(x_vali)
+    #doing hyperparam optimization here
+    ''' 
+    param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
+    base_estimator = Perceptron()
+    sh = HalvingGridSearchCV(base_estimator, param_grid, cv=5, factor=2, max_resources=30).fit(x_train_new, y_train)
+    print(sh.best_estimator_)
+    df = pd.DataFrame(sh.cv_results_)
+    print(df.head())
+    '''
     models = {
         "SGDClassifier": SGDClassifier(),
-        "Perceptron": Perceptron(),
-        "LogisticRegression": LogisticRegression()
+        "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
+        "LogisticRegression": LogisticRegression(max_iter=250, random_state=1841, solver='sag')
     }
     for name, m in models.items():
-        m.fit(x_train, y_train)
+        m.fit(x_train_new, y_train)
         print("{}:".format(name))
-        print("\tVali-Acc: {:.3}".format(m.score(x_vali, y_vali)))
+        print("\tVali-Acc: {:.3}".format(m.score(x_vali_new, y_vali)))
     
