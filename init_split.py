@@ -16,8 +16,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectPercentile
 from sklearn.feature_selection import f_classif
 from sklearn.experimental import enable_halving_search_cv  # noqa
-from sklearn.model_selection import HalvingGridSearchCV
-
+from sklearn.model_selection import GridSearchCV
+from scipy.sparse import coo_matrix, hstack
+from scipy import sparse
 from text_analysis import lemmatize_bagged, main_analysis, get_return_value, get_param_location, param_traits, action_on_sub
 from body_analysis import body_len, find_left_invoke
 
@@ -65,9 +66,11 @@ def data_pp(data, body):
                 new_datapoint["body_length"] = body_len(datapoint["func_body_text"])
                 new_datapoint["left_of_eq"] = find_left_invoke(datapoint["func_body_text"], target_param)
                 #print(new_datapoint["body_length"])
+            '''
             for word in new_datapoint["lemmatized_bow"]:
                     new_datapoint["func_dec: " + word] = 1
                     #print(word)
+            '''
             #new_datapoint["relevant_action"] = action_on_sub(datapoint["func_prototype"], target_param)
             #adding to big set
             prototypes.append(new_datapoint)
@@ -104,6 +107,10 @@ def split_data(xs):
     func_to_column.fit(f_train["func_prototype"].to_list())
     
     different_data_sets =  [f_train, f_validate, f_test]
+    
+    f_train_bow = func_to_column.transform(f_train["func_prototype"].to_list())
+    f_validate_bow = func_to_column.transform(f_validate["func_prototype"].to_list())
+    f_test_bow = func_to_column.transform(f_test["func_prototype"].to_list())
     '''
     for dataset in different_data_sets:
         for bag in dataset["lemmatized_bow"]:
@@ -116,7 +123,7 @@ def split_data(xs):
     f_validate_bow = func_to_column.transform(f_validate["func_prototype"].to_list())
     f_test_bow = func_to_column.transform(f_test["func_prototype"].to_list())
     '''
-
+    print(type(f_train_bow))
     del f_train["lemmatized_bow"]
     del f_validate["lemmatized_bow"]
     del f_test["lemmatized_bow"]
@@ -130,8 +137,15 @@ def split_data(xs):
     y_train, xx_train = prepare_data(f_train, fit=True)
     y_vali, xx_vali = prepare_data(f_validate)
     y_test, xx_test = prepare_data(f_test) 
-
-    return [xx_train, xx_vali, xx_test, y_train, y_vali, y_test]
+    sparse_xx_train = sparse.csr_matrix(xx_train)
+    sparse_xx_vali = sparse.csr_matrix(xx_vali)
+    sparse_xx_test = sparse.csr_matrix(xx_test)
+    dual_xx_train = hstack([f_train_bow, sparse_xx_train]).toarray()
+    dual_xx_vali = hstack([f_validate_bow, sparse_xx_vali]).toarray()
+    dual_xx_test = hstack([f_test_bow, sparse_xx_test]).toarray()
+    #print(type(sparse.csr_matrix(xx_train)))
+    #print(type(hstack([f_train_bow, sparse.csr_matrix(xx_train)]).toarray()))
+    return [dual_xx_train, dual_xx_vali, dual_xx_test, y_train, y_vali, y_test]
 
 '''
 prepare_data taken from PS10 from CS451 S21
@@ -142,6 +156,7 @@ def prepare_data(
     """ This function converts a dataframe to an (X, y) tuple. It learns if fit=True."""
     global numeric, scaling
     y = df.pop("immutable").values
+    #df.drop("immutable", inplace=True, axis=1)
     # use fit_transform only on training data:
     if fit:
         return y, scaling.fit_transform(numberer.fit_transform(df.to_dict("records")))
@@ -182,16 +197,16 @@ if __name__ == "__main__":
     print(x_vali)
     x_vali_new = feature_op.transform(x_vali)
     #doing hyperparam optimization here
-    ''' 
-    param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
-    base_estimator = Perceptron()
-    sh = HalvingGridSearchCV(base_estimator, param_grid, cv=5, factor=2, max_resources=30).fit(x_train_new, y_train)
+     
+    param_grid = [{'solver': ['newton-cg', 'lbfgs', 'sag', 'saga'], 'random_state':[1841]}]
+    base_estimator = LogisticRegression()
+    sh = GridSearchCV(base_estimator, param_grid).fit(x_train_new, y_train)
     print(sh.best_estimator_)
     df = pd.DataFrame(sh.cv_results_)
     print(df.head())
     '''
     models = {
-        "SGDClassifier": SGDClassifier(),
+        "SGDClassifier": SGDClassifier(random_state=1841),
         "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
         "LogisticRegression": LogisticRegression(max_iter=250, random_state=1841, solver='sag')
     }
@@ -199,4 +214,4 @@ if __name__ == "__main__":
         m.fit(x_train_new, y_train)
         print("{}:".format(name))
         print("\tVali-Acc: {:.3}".format(m.score(x_vali_new, y_vali)))
-    
+    '''
