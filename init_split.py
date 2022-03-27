@@ -9,7 +9,7 @@ from sklearn.utils import resample
 from collections import defaultdict
 from dataclasses import dataclass, field
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction import DictVectorizer
+from sklearn.feature_extraction import DictVectorizer, FeatureHasher
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier, Perceptron
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -24,8 +24,9 @@ from body_analysis import body_len, find_left_invoke
 ys = []
 prototypes = []
 RANDOM_SEED = 1999
-numberer = DictVectorizer(sparse=False)
-scaling = StandardScaler()
+#numberer = DictVectorizer(sparse=True)
+numberer = FeatureHasher()
+scaling = StandardScaler(with_mean=False)
 #hypothesis: while the model will be more efficient than other approaches, it will have difficulty labeling in such a constrained context
 
 def data_pp(data, body):
@@ -74,7 +75,7 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 10000:
+            if location == 60000:
                 break
         #print(prototypes)
         le = LabelEncoder()
