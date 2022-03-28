@@ -77,7 +77,7 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 10000:
+            if location == 60000:
                 break
         #print(prototypes)
         le = LabelEncoder()
@@ -197,7 +197,7 @@ if __name__ == "__main__":
     print(x_vali)
     x_vali_new = feature_op.transform(x_vali)
     #doing hyperparam optimization here
-     
+    ''' 
     param_grid = [{'solver': ['newton-cg', 'lbfgs', 'sag', 'saga'], 'random_state':[1841]}]
     base_estimator = LogisticRegression()
     sh = GridSearchCV(base_estimator, param_grid).fit(x_train_new, y_train)
@@ -214,4 +214,4 @@ if __name__ == "__main__":
         m.fit(x_train_new, y_train)
         print("{}:".format(name))
         print("\tVali-Acc: {:.3}".format(m.score(x_vali_new, y_vali)))
-    '''
+    
