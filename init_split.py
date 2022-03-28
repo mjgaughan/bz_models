@@ -75,7 +75,7 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 60000:
+            if location == 80000:
                 break
         #print(prototypes)
         le = LabelEncoder()
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     models = {
         "SGDClassifier": SGDClassifier(),
         "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
-        "LogisticRegression": LogisticRegression(max_iter=250, random_state=1841, solver='sag')
+        "LogisticRegression": LogisticRegression(max_iter=1000, random_state=1841, solver='sag')
     }
     for name, m in models.items():
         m.fit(x_train_new, y_train)
