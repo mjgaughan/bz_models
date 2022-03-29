@@ -75,6 +75,7 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
+            print(location)
             if location == 30000:
                 break
         #print(prototypes)
