@@ -75,7 +75,7 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 50000:
+            if location == 30000:
                 break
         #print(prototypes)
         le = LabelEncoder()
@@ -154,9 +154,9 @@ def prepare_data(
 
 
 if __name__ == "__main__":
-    #preprocessed = data_pp("full_shuffle_labeled.csv", False)
+    #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../bz_func_declarations/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
     #get the pd.df to replace NaN
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     models = {
         "SGDClassifier": SGDClassifier(),
         "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
-        "LogisticRegression": LogisticRegression(max_iter=250, random_state=1841, solver='sag')
+        "LogisticRegression": LogisticRegression(max_iter=10000, random_state=1841, solver='sag')
     }
     for name, m in models.items():
         m.fit(x_train_new, y_train)
