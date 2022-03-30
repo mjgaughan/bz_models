@@ -191,13 +191,18 @@ if __name__ == "__main__":
     df = pd.DataFrame(sh.cv_results_)
     print(df.head())
     '''
-    models = {
-        "SGDClassifier": SGDClassifier(),
-        "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
-        "LogisticRegression": LogisticRegression(max_iter=1000, random_state=1841, solver='sag')
-    }
-    for name, m in models.items():
-        m.fit(x_train_new, y_train)
-        print("{}:".format(name))
-        print("\tVali-Acc: {:.3}".format(m.score(x_vali_new, y_vali)))
+    with open("test_over_all.txt", "w") as f:
+        models = {
+            "SGDClassifier": SGDClassifier(),
+            "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
+            "LogisticRegression": LogisticRegression(max_iter=1000, random_state=1841, solver='sag')
+        }
+        for name, m in models.items():
+            m.fit(x_train_new, y_train)
+            print("{}:".format(name))
+            f.write(name)
+            vali_acc = m.score(x_vali_new, y_vali)
+            print("\tVali-Acc: {:.3}".format(vali_acc))
+            f.write(vali_acc)
+            
     
