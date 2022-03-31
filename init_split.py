@@ -77,7 +77,7 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-            if location == 60000:
+            if location == 10000:
                 break
         #print(prototypes)
         le = LabelEncoder()
