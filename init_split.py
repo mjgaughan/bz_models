@@ -55,7 +55,7 @@ def data_pp(data, body):
                     target_param = current_param_entry
                     break
             #creating new features
-            new_datapoint= {"func_prototype": datapoint["func_prototype"], "target_param": target_param, "lemmatized_bow": lemmatize_bagged(datapoint["func_prototype"]) }
+            new_datapoint= {"func_prototype": datapoint["func_prototype"], "target_param": target_param, "lemmatized_bow": ' '.join(lemmatize_bagged(datapoint["func_prototype"])) }
             #new_datapoint = {"target_param" : target_param, "func_prototype": datapoint["func_prototype"]}
             new_datapoint["func_return_value"] =  get_return_value(datapoint["func_prototype"])
             return_values.append(new_datapoint["func_return_value"])
@@ -103,14 +103,14 @@ def split_data(xs):
     func_to_column = TfidfVectorizer(
         strip_accents="unicode", lowercase=True, stop_words="english", max_df=0.5
     )
-
-    func_to_column.fit(f_train["func_prototype"].to_list())
+    print(f_train["lemmatized_bow"])
+    func_to_column.fit(f_train["lemmatized_bow"])
     
     different_data_sets =  [f_train, f_validate, f_test]
     
-    f_train_bow = func_to_column.transform(f_train["func_prototype"].to_list())
-    f_validate_bow = func_to_column.transform(f_validate["func_prototype"].to_list())
-    f_test_bow = func_to_column.transform(f_test["func_prototype"].to_list())
+    f_train_bow = func_to_column.transform(f_train["lemmatized_bow"])
+    f_validate_bow = func_to_column.transform(f_validate["lemmatized_bow"])
+    f_test_bow = func_to_column.transform(f_test["lemmatized_bow"])
     '''
     for dataset in different_data_sets:
         for bag in dataset["lemmatized_bow"]:
@@ -170,7 +170,7 @@ def prepare_data(
 if __name__ == "__main__":
     #preprocessed = data_pp("full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../bz_func_declarations/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
     #get the pd.df to replace NaN
@@ -208,7 +208,7 @@ if __name__ == "__main__":
     models = {
         "SGDClassifier": SGDClassifier(random_state=1841),
         "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
-        "LogisticRegression": LogisticRegression(max_iter=250, random_state=1841, solver='sag')
+        "LogisticRegression": LogisticRegression(max_iter=12500, random_state=1841, solver='sag')
     }
     for name, m in models.items():
         m.fit(x_train_new, y_train)
