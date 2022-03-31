@@ -75,13 +75,9 @@ def data_pp(data, body):
             #for testing
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
-<<<<<<< HEAD
             print(location)
-            if location == 30000:
-=======
-            if location == 80000:
->>>>>>> origin
-                break
+            #if location == 5000:
+            #    break
         #print(prototypes)
         le = LabelEncoder()
         le.fit(return_values)
@@ -208,6 +204,6 @@ if __name__ == "__main__":
             f.write(name)
             vali_acc = m.score(x_vali_new, y_vali)
             print("\tVali-Acc: {:.3}".format(vali_acc))
-            f.write(vali_acc)
+            f.write(str(vali_acc))
            
     
