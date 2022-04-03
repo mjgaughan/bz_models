@@ -17,6 +17,7 @@ from sklearn.feature_selection import SelectPercentile
 from sklearn.feature_selection import f_classif
 from sklearn.experimental import enable_halving_search_cv  # noqa
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import precision_recall_fscore_support
 
 from text_analysis import lemmatize_bagged, main_analysis, get_return_value, get_param_location, param_traits, action_on_sub
 from body_analysis import body_len, find_left_invoke
@@ -183,6 +184,7 @@ if __name__ == "__main__":
     x_train_new = feature_op.fit_transform(x_train, y_train)
     print(x_vali)
     x_vali_new = feature_op.transform(x_vali)
+    #x_test_new = feature_op.transform(x_test)
     #doing hyperparam optimization here
     '''
     param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
@@ -200,10 +202,21 @@ if __name__ == "__main__":
         }
         for name, m in models.items():
             m.fit(x_train_new, y_train)
+            #try to plot the training curve at this moment?
             print("{}:".format(name))
             f.write(name)
             vali_acc = m.score(x_vali_new, y_vali)
             print("\tVali-Acc: {:.3}".format(vali_acc))
+            '''
+            start timer
+            y_predictions = m.predict(x_test_new)
+            y_probs = m.predict_proba(x_test_new)
+            prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
+            end timer
+            temp_df = pd.DataFrame({'predictions': y_predictions, 'probabilities': y_probs, 'truth':y_test})
+            temp_df.to_csv('test_results_' + name + '.csv')
+            record the other pieces of information in a txt file
+            '''
             f.write(str(vali_acc))
            
     
