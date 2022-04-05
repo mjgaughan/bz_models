@@ -13,12 +13,14 @@ from sklearn.feature_extraction import DictVectorizer, FeatureHasher
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier, Perceptron
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_selection import SelectPercentile
+from sklearn.feature_selection import SelectPercentile, chi2, mutual_info_regression
 from sklearn.feature_selection import f_classif
 from sklearn.experimental import enable_halving_search_cv  # noqa
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import precision_recall_fscore_support
-
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score
+from datetime import datetime
+from sklearn.metrics import PrecisionRecallDisplay, precision_recall_curve
+#import matplotlib as plt
 from text_analysis import lemmatize_bagged, main_analysis, get_return_value, get_param_location, param_traits, action_on_sub
 from body_analysis import body_len, find_left_invoke
 
@@ -77,8 +79,8 @@ def data_pp(data, body):
             action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
             print(location)
-            #if location == 5000:
-            #    break
+            #if location == 10000:
+            #   break
         #print(prototypes)
         le = LabelEncoder()
         le.fit(return_values)
@@ -156,9 +158,10 @@ def prepare_data(
 
 
 if __name__ == "__main__":
+    loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
     #get the pd.df to replace NaN
@@ -180,12 +183,12 @@ if __name__ == "__main__":
     #print(x_vali)
     #print(y_vali)
     print(x_train.shape)
-    #TODO:test this below line with chi2/mutual_info_regression
+    #test this below line with chi2/mutual_info_regression
     feature_op = SelectPercentile(f_classif, percentile=85)
     x_train_new = feature_op.fit_transform(x_train, y_train)
     print(x_vali)
     x_vali_new = feature_op.transform(x_vali)
-    #x_test_new = feature_op.transform(x_test)
+    x_test_new = feature_op.transform(x_test)
     #doing hyperparam optimization here
     '''
     param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
@@ -199,21 +202,37 @@ if __name__ == "__main__":
         models = {
             "SGDClassifier": SGDClassifier(),
             "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
-            "LogisticRegression": LogisticRegression(max_iter=1000, random_state=1841, solver='sag')
+            "LogisticRegression": LogisticRegression(max_iter=10000, random_state=1841, solver='sag')
         }
+        prep_time = datetime.now() - loading_data_in
+        f.write("prep time: " + str(prep_time))
         for name, m in models.items():
+            start_model = datetime.now()
             m.fit(x_train_new, y_train)
             #try to plot the training curve at this moment?
             print("{}:".format(name))
             f.write(name)
             vali_acc = m.score(x_vali_new, y_vali)
             print("\tVali-Acc: {:.3}".format(vali_acc))
-            '''
-            start timer
             y_predictions = m.predict(x_test_new)
-            y_probs = m.predict_proba(x_test_new)
-            prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
-            end timer
+            if name != "SGDClassifier" and name != "Perceptron":
+                y_probs = m.predict_proba(x_test_new)
+            #prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
+            #precision, recall, _ = precision_recall_curve(y_test, y_predictions)
+            done_model = datetime.now() - start_model
+            #pr_plot = PrecisionRecallDisplay(y_test, y_predictions)
+            #plt.savefig('foo' + name + '.png')
+
+            if name != "SGDClassifier"and name != "Perceptron":
+                temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
+                prob_df = pd.DataFrame(y_probs)
+                prob_df.to_csv("logreg_prob_test.csv")
+            else:
+                 temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
+            temp_df.to_csv('test_results_' + name + '.csv')
+            test_acc = accuracy_score(y_test, y_predictions)
+            '''
+            https://datascience.stackexchange.com/questions/81389/plotting-multiple-precision-recall-curves-in-one-plot
             https://scikit-learn.org/stable/modules/generated/sklearn.metrics.PrecisionRecallDisplay.html#sklearn.metrics.PrecisionRecallDisplay
             PrecisionRecallDisplay (need to do with multiple models?)
             temp_df = pd.DataFrame({'predictions': y_predictions, 'probabilities': y_probs, 'truth':y_test})
@@ -222,7 +241,8 @@ if __name__ == "__main__":
                 - time
                 - accuracy
                 - 
+
             '''
-            f.write(str(vali_acc))
+            f.write("test: "+ str(test_acc) + "; time: " + str(done_model))
            
     
