@@ -180,6 +180,7 @@ if __name__ == "__main__":
     #print(x_vali)
     #print(y_vali)
     print(x_train.shape)
+    #TODO:test this below line with chi2/mutual_info_regression
     feature_op = SelectPercentile(f_classif, percentile=85)
     x_train_new = feature_op.fit_transform(x_train, y_train)
     print(x_vali)
@@ -213,9 +214,14 @@ if __name__ == "__main__":
             y_probs = m.predict_proba(x_test_new)
             prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
             end timer
+            https://scikit-learn.org/stable/modules/generated/sklearn.metrics.PrecisionRecallDisplay.html#sklearn.metrics.PrecisionRecallDisplay
+            PrecisionRecallDisplay (need to do with multiple models?)
             temp_df = pd.DataFrame({'predictions': y_predictions, 'probabilities': y_probs, 'truth':y_test})
             temp_df.to_csv('test_results_' + name + '.csv')
             record the other pieces of information in a txt file
+                - time
+                - accuracy
+                - 
             '''
             f.write(str(vali_acc))
            
