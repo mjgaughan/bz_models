@@ -161,7 +161,7 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
     #get the pd.df to replace NaN
