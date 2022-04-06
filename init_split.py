@@ -161,7 +161,7 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", False)
     features = pd.DataFrame(preprocessed)
     
     #get the pd.df to replace NaN
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     df = pd.DataFrame(sh.cv_results_)
     print(df.head())
     '''
-    with open("test_over_all.txt", "w") as f:
+    with open("test_over_all_no_body.txt", "w") as f:
         models = {
             "SGDClassifier": SGDClassifier(),
             "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
@@ -226,10 +226,10 @@ if __name__ == "__main__":
             if name != "SGDClassifier"and name != "Perceptron":
                 temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
                 prob_df = pd.DataFrame(y_probs)
-                prob_df.to_csv("logreg_prob_test.csv")
+                prob_df.to_csv("logreg_prob_nb_test.csv")
             else:
                  temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
-            temp_df.to_csv('test_results_' + name + '.csv')
+            temp_df.to_csv('test_results_' + name + '_nb.csv')
             test_acc = accuracy_score(y_test, y_predictions)
             '''
             https://datascience.stackexchange.com/questions/81389/plotting-multiple-precision-recall-curves-in-one-plot
