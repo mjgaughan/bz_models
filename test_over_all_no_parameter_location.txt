@@ -1,1 +1,0 @@
-prep time: 0:00:04.895452SGDClassifiertest: 0.6; time: 0:00:00.024386Perceptrontest: 0.48; time: 0:00:00.023975LogisticRegressiontest: 0.56; time: 0:00:01.983357
