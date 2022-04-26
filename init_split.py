@@ -164,6 +164,11 @@ if __name__ == "__main__":
     preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
+    
+    #this is where to take out handcrafted
+    hand_crafted_features = ["func_return_value", "parameter_location", "param_name_len", "relevant_action_sub", "body_len", "left_of_eq"]
+    features.drop('parameter_location', inplace=True, axis=1)
+    
     #get the pd.df to replace NaN
     print(features.head())
     #features.replace(NaN, 0)
@@ -184,13 +189,14 @@ if __name__ == "__main__":
     #print(y_vali)
     print(x_train.shape)
     #test this below line with chi2/mutual_info_regression
+    '''
     feature_op = SelectPercentile(f_classif, percentile=85)
     x_train_new = feature_op.fit_transform(x_train, y_train)
     print(x_vali)
     x_vali_new = feature_op.transform(x_vali)
     x_test_new = feature_op.transform(x_test)
     #doing hyperparam optimization here
-    '''
+    
     param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
     base_estimator = Perceptron()
     sh = GridSearchCV(base_estimator, param_grid).fit(x_train_new, y_train)
@@ -198,7 +204,7 @@ if __name__ == "__main__":
     df = pd.DataFrame(sh.cv_results_)
     print(df.head())
     '''
-    with open("test_over_all.txt", "w") as f:
+    with open("test_over_all_no_param_loc.txt", "w") as f:
         models = {
             "SGDClassifier": SGDClassifier(),
             "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
@@ -208,15 +214,15 @@ if __name__ == "__main__":
         f.write("prep time: " + str(prep_time))
         for name, m in models.items():
             start_model = datetime.now()
-            m.fit(x_train_new, y_train)
+            m.fit(x_train, y_train)
             #try to plot the training curve at this moment?
             print("{}:".format(name))
             f.write(name)
-            vali_acc = m.score(x_vali_new, y_vali)
+            vali_acc = m.score(x_vali, y_vali)
             print("\tVali-Acc: {:.3}".format(vali_acc))
-            y_predictions = m.predict(x_test_new)
+            y_predictions = m.predict(x_test)
             if name != "SGDClassifier" and name != "Perceptron":
-                y_probs = m.predict_proba(x_test_new)
+                y_probs = m.predict_proba(x_test)
             #prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
             #precision, recall, _ = precision_recall_curve(y_test, y_predictions)
             done_model = datetime.now() - start_model
@@ -245,4 +251,4 @@ if __name__ == "__main__":
             '''
             f.write("test: "+ str(test_acc) + "; time: " + str(done_model))
            
-    
+            
