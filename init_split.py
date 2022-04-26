@@ -169,7 +169,7 @@ if __name__ == "__main__":
     hand_crafted_features = ["func_return_value", "parameter_location", "param_name_len", "relevant_action_sub", "body_length", "left_of_eq"]
     for removed_param in hand_crafted_features:
         taken_out = features.loc[:,removed_param]
-        features.drop(removed_param, inplace=True, axis=1)
+        #features.drop(removed_param, inplace=True, axis=1)
     
         #get the pd.df to replace NaN
         print(features.head())
@@ -206,7 +206,7 @@ if __name__ == "__main__":
         df = pd.DataFrame(sh.cv_results_)
         print(df.head())
         '''
-        with open("test_over_all_no_" +removed_param +".txt", "w") as f:
+        with open("test_over_all_no_4_26.txt", "w") as f:
             models = {
                 "SGDClassifier": SGDClassifier(),
                 "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
@@ -234,10 +234,10 @@ if __name__ == "__main__":
                 if name != "SGDClassifier"and name != "Perceptron":
                     temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
                     prob_df = pd.DataFrame(y_probs)
-                    prob_df.to_csv("logreg_prob_nb_test.csv")
+                    prob_df.to_csv("logreg_prob_test_4_26.csv")
                 else:
                     temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
-                temp_df.to_csv('test_results_' + name + '_nb.csv')
+                temp_df.to_csv('test_results_' + name + '_4_26.csv')
                 test_acc = accuracy_score(y_test, y_predictions)
                 '''
                 https://datascience.stackexchange.com/questions/81389/plotting-multiple-precision-recall-curves-in-one-plot
@@ -253,4 +253,5 @@ if __name__ == "__main__":
                 '''
                 f.write("test: "+ str(test_acc) + "; time: " + str(done_model))
         
-        features[removed_param] = taken_out    
+        features[removed_param] = taken_out
+        break
