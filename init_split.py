@@ -76,10 +76,10 @@ def data_pp(data, body):
             #adding to big set
             prototypes.append(new_datapoint)
             #for testing
-            action_on_sub(datapoint["func_prototype"], target_param) 
+            new_datapoint['relevant_action_sub'] = action_on_sub(datapoint["func_prototype"], target_param) 
             location += 1
             print(location)
-            #if location == 10000:
+            #if location == 100:
             #   break
         #print(prototypes)
         le = LabelEncoder()
@@ -161,94 +161,96 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", False)
+    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
     
     #this is where to take out handcrafted
-    hand_crafted_features = ["func_return_value", "parameter_location", "param_name_len", "relevant_action_sub", "body_len", "left_of_eq"]
-    features.drop('parameter_location', inplace=True, axis=1)
+    hand_crafted_features = ["func_return_value", "parameter_location", "param_name_len", "relevant_action_sub", "body_length", "left_of_eq"]
+    for removed_param in hand_crafted_features:
+        taken_out = features.loc[:,removed_param]
+        features.drop(removed_param, inplace=True, axis=1)
     
-    #get the pd.df to replace NaN
-    print(features.head())
-    #features.replace(NaN, 0)
-    features.fillna(0, inplace=True)
-    print(features.head())
-    splits = split_data(features)
+        #get the pd.df to replace NaN
+        print(features.head())
+        #features.replace(NaN, 0)
+        features.fillna(0, inplace=True)
+        print(features.head())
+        splits = split_data(features)
     
-    x_train = splits[0]
-    x_vali = splits[1]
-    x_test = splits[2]
-    y_train = splits[3]
-    y_vali = splits[4]
-    y_test = splits[5]
-    #print(len(x_train))
-    #print(len(y_train))
-    #see if anything else needs to happen at this junctur
-    #print(x_vali)
-    #print(y_vali)
-    print(x_train.shape)
-    #test this below line with chi2/mutual_info_regression
-    '''
-    feature_op = SelectPercentile(f_classif, percentile=85)
-    x_train_new = feature_op.fit_transform(x_train, y_train)
-    print(x_vali)
-    x_vali_new = feature_op.transform(x_vali)
-    x_test_new = feature_op.transform(x_test)
-    #doing hyperparam optimization here
+        x_train = splits[0]
+        x_vali = splits[1]
+        x_test = splits[2]
+        y_train = splits[3]
+        y_vali = splits[4]
+        y_test = splits[5]
+        #print(len(x_train))
+        #print(len(y_train))
+        #see if anything else needs to happen at this junctur
+        #print(x_vali)
+        #print(y_vali)
+        print(x_train.shape)
+        #test this below line with chi2/mutual_info_regression
+        '''
+        feature_op = SelectPercentile(f_classif, percentile=85)
+        x_train_new = feature_op.fit_transform(x_train, y_train)
+        print(x_vali)
+        x_vali_new = feature_op.transform(x_vali)
+        x_test_new = feature_op.transform(x_test)
+        #doing hyperparam optimization here
     
-    param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
-    base_estimator = Perceptron()
-    sh = GridSearchCV(base_estimator, param_grid).fit(x_train_new, y_train)
-    print(sh.best_estimator_)
-    df = pd.DataFrame(sh.cv_results_)
-    print(df.head())
-    '''
-    with open("test_over_all_no_param_loc.txt", "w") as f:
-        models = {
-            "SGDClassifier": SGDClassifier(),
-            "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
-            "LogisticRegression": LogisticRegression(max_iter=10000, random_state=1841, solver='sag')
-        }
-        prep_time = datetime.now() - loading_data_in
-        f.write("prep time: " + str(prep_time))
-        for name, m in models.items():
-            start_model = datetime.now()
-            m.fit(x_train, y_train)
-            #try to plot the training curve at this moment?
-            print("{}:".format(name))
-            f.write(name)
-            vali_acc = m.score(x_vali, y_vali)
-            print("\tVali-Acc: {:.3}".format(vali_acc))
-            y_predictions = m.predict(x_test)
-            if name != "SGDClassifier" and name != "Perceptron":
-                y_probs = m.predict_proba(x_test)
-            #prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
-            #precision, recall, _ = precision_recall_curve(y_test, y_predictions)
-            done_model = datetime.now() - start_model
-            #pr_plot = PrecisionRecallDisplay(y_test, y_predictions)
-            #plt.savefig('foo' + name + '.png')
+        param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
+        base_estimator = Perceptron()
+        sh = GridSearchCV(base_estimator, param_grid).fit(x_train_new, y_train)
+        print(sh.best_estimator_)
+        df = pd.DataFrame(sh.cv_results_)
+        print(df.head())
+        '''
+        with open("test_over_all_no_" +removed_param +".txt", "w") as f:
+            models = {
+                "SGDClassifier": SGDClassifier(),
+                "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
+                "LogisticRegression": LogisticRegression(max_iter=10000, random_state=1841, solver='sag')
+            }
+            prep_time = datetime.now() - loading_data_in
+            f.write("prep time: " + str(prep_time))
+            for name, m in models.items():
+                start_model = datetime.now()
+                m.fit(x_train, y_train)
+                #try to plot the training curve at this moment?
+                print("{}:".format(name))
+                f.write(name)
+                vali_acc = m.score(x_vali, y_vali)
+                print("\tVali-Acc: {:.3}".format(vali_acc))
+                y_predictions = m.predict(x_test)
+                if name != "SGDClassifier" and name != "Perceptron":
+                    y_probs = m.predict_proba(x_test)
+                #prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
+                #precision, recall, _ = precision_recall_curve(y_test, y_predictions)
+                done_model = datetime.now() - start_model
+                #pr_plot = PrecisionRecallDisplay(y_test, y_predictions)
+                #plt.savefig('foo' + name + '.png')
 
-            if name != "SGDClassifier"and name != "Perceptron":
-                temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
-                prob_df = pd.DataFrame(y_probs)
-                prob_df.to_csv("logreg_prob_nb_test.csv")
-            else:
-                 temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
-            temp_df.to_csv('test_results_' + name + '_nb.csv')
-            test_acc = accuracy_score(y_test, y_predictions)
-            '''
-            https://datascience.stackexchange.com/questions/81389/plotting-multiple-precision-recall-curves-in-one-plot
-            https://scikit-learn.org/stable/modules/generated/sklearn.metrics.PrecisionRecallDisplay.html#sklearn.metrics.PrecisionRecallDisplay
-            PrecisionRecallDisplay (need to do with multiple models?)
-            temp_df = pd.DataFrame({'predictions': y_predictions, 'probabilities': y_probs, 'truth':y_test})
-            temp_df.to_csv('test_results_' + name + '.csv')
-            record the other pieces of information in a txt file
-                - time
-                - accuracy
-                - 
+                if name != "SGDClassifier"and name != "Perceptron":
+                    temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
+                    prob_df = pd.DataFrame(y_probs)
+                    prob_df.to_csv("logreg_prob_nb_test.csv")
+                else:
+                    temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
+                temp_df.to_csv('test_results_' + name + '_nb.csv')
+                test_acc = accuracy_score(y_test, y_predictions)
+                '''
+                https://datascience.stackexchange.com/questions/81389/plotting-multiple-precision-recall-curves-in-one-plot
+                https://scikit-learn.org/stable/modules/generated/sklearn.metrics.PrecisionRecallDisplay.html#sklearn.metrics.PrecisionRecallDisplay
+                PrecisionRecallDisplay (need to do with multiple models?)
+                temp_df = pd.DataFrame({'predictions': y_predictions, 'probabilities': y_probs, 'truth':y_test})
+                temp_df.to_csv('test_results_' + name + '.csv')
+                record the other pieces of information in a txt file
+                    - time
+                    - accuracy
+                    - 
 
-            '''
-            f.write("test: "+ str(test_acc) + "; time: " + str(done_model))
-           
-            
+                '''
+                f.write("test: "+ str(test_acc) + "; time: " + str(done_model))
+        
+        features[removed_param] = taken_out    
