@@ -191,14 +191,14 @@ if __name__ == "__main__":
         #print(y_vali)
         print(x_train.shape)
         #test this below line with chi2/mutual_info_regression
-        '''
+        
         feature_op = SelectPercentile(f_classif, percentile=85)
         x_train_new = feature_op.fit_transform(x_train, y_train)
         print(x_vali)
         x_vali_new = feature_op.transform(x_vali)
         x_test_new = feature_op.transform(x_test)
         #doing hyperparam optimization here
-    
+        ''' 
         param_grid = [{'alpha': [0.1, 0.01, 0.001, 0.5], 'max_iter': [1500, 2000, 1000], 'random_state':[1841]}]
         base_estimator = Perceptron()
         sh = GridSearchCV(base_estimator, param_grid).fit(x_train_new, y_train)
@@ -206,7 +206,7 @@ if __name__ == "__main__":
         df = pd.DataFrame(sh.cv_results_)
         print(df.head())
         '''
-        with open("test_over_all_no_4_26.txt", "w") as f:
+        with open("test_over_all_no_4_26_again.txt", "w") as f:
             models = {
                 "SGDClassifier": SGDClassifier(),
                 "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
@@ -216,15 +216,15 @@ if __name__ == "__main__":
             f.write("prep time: " + str(prep_time))
             for name, m in models.items():
                 start_model = datetime.now()
-                m.fit(x_train, y_train)
+                m.fit(x_train_new, y_train)
                 #try to plot the training curve at this moment?
                 print("{}:".format(name))
                 f.write(name)
-                vali_acc = m.score(x_vali, y_vali)
+                vali_acc = m.score(x_vali_new, y_vali)
                 print("\tVali-Acc: {:.3}".format(vali_acc))
-                y_predictions = m.predict(x_test)
+                y_predictions = m.predict(x_test_new)
                 if name != "SGDClassifier" and name != "Perceptron":
-                    y_probs = m.predict_proba(x_test)
+                    y_probs = m.predict_proba(x_test_new)
                 #prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
                 #precision, recall, _ = precision_recall_curve(y_test, y_predictions)
                 done_model = datetime.now() - start_model
@@ -237,7 +237,7 @@ if __name__ == "__main__":
                     prob_df.to_csv("logreg_prob_test_4_26.csv")
                 else:
                     temp_df = pd.DataFrame({'predictions': y_predictions, 'truth':y_test})
-                temp_df.to_csv('test_results_' + name + '_4_26.csv')
+                temp_df.to_csv('test_results_' + name + '_4_26_again.csv')
                 test_acc = accuracy_score(y_test, y_predictions)
                 '''
                 https://datascience.stackexchange.com/questions/81389/plotting-multiple-precision-recall-curves-in-one-plot
