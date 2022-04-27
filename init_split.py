@@ -161,7 +161,7 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", False)
     features = pd.DataFrame(preprocessed)
     
     
@@ -206,7 +206,7 @@ if __name__ == "__main__":
         df = pd.DataFrame(sh.cv_results_)
         print(df.head())
         '''
-        with open("test_over_all_no_4_26.txt", "w") as f:
+        with open("test_over_all_no_4_26_no_body.txt", "w") as f:
             models = {
                 "SGDClassifier": SGDClassifier(),
                 "Perceptron": Perceptron(alpha=0.1, max_iter=1500, random_state=1841),
