@@ -14,7 +14,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier, Perceptron
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectPercentile, chi2, mutual_info_regression
-from sklearn.feature_selection import f_classif
+from sklearn.feature_selection import f_classif, SelectKBest
 from sklearn.experimental import enable_halving_search_cv  # noqa
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
@@ -70,6 +70,7 @@ def data_pp(data, body):
                 new_datapoint["left_of_eq"] = find_left_invoke(datapoint["func_body_text"], target_param)
                 #print(new_datapoint["body_length"])
             just_words = {}
+            just_words["immutable"] = immutable
             for word in new_datapoint["lemmatized_bow"]:
                     new_datapoint["func_dec: " + word] = 1
                     just_words["func_dec: " + word] = 1
@@ -77,12 +78,12 @@ def data_pp(data, body):
             #new_datapoint["relevant_action"] = action_on_sub(datapoint["func_prototype"], target_param)
             #adding to big set
             new_datapoint['relevant_action_sub'] = action_on_sub(datapoint["func_prototype"], target_param)
-            prototypes.append(new_datapoint)
+            prototypes.append(just_words)
             #for testing 
             location += 1
             print(location)
             if location == 100:
-               break
+              break
         #print(prototypes)
         le = LabelEncoder()
         le.fit(return_values)
@@ -103,7 +104,7 @@ def split_data(xs):
     f_train, f_validate = train_test_split(
         f_tv, train_size=0.66, shuffle=False, random_state=RANDOM_SEED
     )
-    
+    '''
     func_to_column = TfidfVectorizer(
         strip_accents="unicode", lowercase=True, stop_words="english", max_df=0.5
     )
@@ -111,7 +112,7 @@ def split_data(xs):
     func_to_column.fit(f_train["func_prototype"].to_list())
     
     different_data_sets =  [f_train, f_validate, f_test]
-    '''
+    
     for dataset in different_data_sets:
         for bag in dataset["lemmatized_bow"]:
             #dataset["funcdec: " + word] = 1
@@ -124,11 +125,13 @@ def split_data(xs):
     f_test_bow = func_to_column.transform(f_test["func_prototype"].to_list())
     '''
 
-    del f_train["lemmatized_bow"]
-    del f_validate["lemmatized_bow"]
-    del f_test["lemmatized_bow"]
+    #del f_train["lemmatized_bow"]
+    #del f_validate["lemmatized_bow"]
+    #del f_test["lemmatized_bow"]
     #f_train["func_col"] = f_train_bow
-
+    y_train_temp = f_train.pop("immutable").values
+    get_coeff(f_train, y_train_temp)
+    f_train["immutable"] = y_train_temp
     #pd.options.display.max_colwidth = 200
     #print(f_train_bow)
     #print("CUTOFF")
@@ -140,6 +143,16 @@ def split_data(xs):
 
     return [xx_train, xx_vali, xx_test, y_train, y_vali, y_test]
 
+def get_coeff(x_train, y_train):
+    print(type(x_train))
+    print(len(y_train))
+    model =  LogisticRegression(max_iter=10000, random_state=1841, solver='sag')
+    model.fit(x_train, y_train)
+    coefs = pd.DataFrame( model.coef_[0],columns=['Coefficients'], index=x_train.columns)
+    coefs = coefs.sort_values(by = ["Coefficients"], ascending=False)
+    print(coefs.head)
+    coefs.to_csv("ranked_coefs_LogReg.csv")
+
 '''
 prepare_data taken from PS10 from CS451 S21
 '''
@@ -149,6 +162,7 @@ def prepare_data(
     """ This function converts a dataframe to an (X, y) tuple. It learns if fit=True."""
     global numeric, scaling
     y = df.pop("immutable").values
+    #return y, df.to_dict('records')
     # use fit_transform only on training data:
     if fit:
         return y, scaling.fit_transform(numberer.fit_transform(df.to_dict("records")))
@@ -189,10 +203,11 @@ if __name__ == "__main__":
             #print(len(x_train))
             #print(len(y_train))
             #see if anything else needs to happen at this junctur
-            #print(x_vali)
+            #rint(x_vali)
             #print(y_vali)
-            print(x_train.shape)
+            #print(x_train.shape)
             #test this below line with chi2/mutual_info_regression
+            
             '''
             feature_op = SelectPercentile(f_classif, percentile=85)
             x_train_new = feature_op.fit_transform(x_train, y_train)
@@ -226,6 +241,21 @@ if __name__ == "__main__":
                 y_predictions = m.predict(x_test)
                 if name != "SGDClassifier" and name != "Perceptron":
                     y_probs = m.predict_proba(x_test)
+                    #names= m.feature_names_in_[0]
+                    #print(names)
+                    #feature_importance = pd.DataFrame(list(features.columns), columns = ["feature"])
+                    importance = m.coef_[0]
+                    #feature_importance["importance"] = pow(math.e, importance)
+                    #feature_importance = feature_importance.sort_values(by = ["importance"], ascending=False)
+                    #print(feature_importance.head)
+                    columns = list(x_train.columns)
+                    print(columns)
+                    for i,v in enumerate(importance):
+                        if v != 0:
+                            #print(columns[i])
+                            print('Feature: %0d, Score: %.5f' % (i,v))
+                    #for i,v in enumerate(importance):
+                    #    print('Feature: ' + columns[i] + ', Score: '+  str(v))
                 #prec_recall_array = precision_recall_fscore_support(y_test, y_predictions, average='macro')
                 #precision, recall, _ = precision_recall_curve(y_test, y_predictions)
                 done_model = datetime.now() - start_model
