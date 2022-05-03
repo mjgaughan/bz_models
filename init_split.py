@@ -69,18 +69,20 @@ def data_pp(data, body):
                 new_datapoint["body_length"] = body_len(datapoint["func_body_text"])
                 new_datapoint["left_of_eq"] = find_left_invoke(datapoint["func_body_text"], target_param)
                 #print(new_datapoint["body_length"])
+            just_words = {}
             for word in new_datapoint["lemmatized_bow"]:
                     new_datapoint["func_dec: " + word] = 1
+                    just_words["func_dec: " + word] = 1
                     #print(word)
             #new_datapoint["relevant_action"] = action_on_sub(datapoint["func_prototype"], target_param)
             #adding to big set
+            new_datapoint['relevant_action_sub'] = action_on_sub(datapoint["func_prototype"], target_param)
             prototypes.append(new_datapoint)
-            #for testing
-            new_datapoint['relevant_action_sub'] = action_on_sub(datapoint["func_prototype"], target_param) 
+            #for testing 
             location += 1
             print(location)
-            #if location == 100:
-            #   break
+            if location == 100:
+               break
         #print(prototypes)
         le = LabelEncoder()
         le.fit(return_values)
@@ -161,15 +163,15 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
-    with open("test_over_all_no_4_27_again.txt", "w") as f: 
+    with open("getting_word_coeffs.txt", "w") as f: 
     #this is where to take out handcrafted
         hand_crafted_features = ["func_return_value", "parameter_location", "param_name_len", "relevant_action_sub", "body_length", "left_of_eq", "label_time"]
         for removed_param in hand_crafted_features:
             taken_out = features.loc[:,removed_param]
-            features.drop(removed_param, inplace=True, axis=1)
+            #features.drop(removed_param, inplace=True, axis=1)
     
             #get the pd.df to replace NaN
             print(features.head())
@@ -250,6 +252,7 @@ if __name__ == "__main__":
                     - 
 
                 '''
-                f.write(removed_param + "test: "+ str(test_acc) + "; time: " + str(done_model))
+                #f.write(removed_param + "test: "+ str(test_acc) + "; time: " + str(done_model))
                 f.write("------------") 
-        features[removed_param] = taken_out
+            break
+        #features[removed_param] = taken_out
