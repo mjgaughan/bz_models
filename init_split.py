@@ -81,8 +81,8 @@ def data_pp(data, body):
             #for testing 
             location += 1
             print(location)
-            if location == 100:
-               break
+            #if location == 100:
+            #   break
         #print(prototypes)
         le = LabelEncoder()
         le.fit(return_values)
@@ -163,10 +163,10 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
-    with open("getting_word_coeffs.txt", "w") as f: 
+    with open("getting_test_.txt", "w") as f: 
     #this is where to take out handcrafted
         hand_crafted_features = ["func_return_value", "parameter_location", "param_name_len", "relevant_action_sub", "body_length", "left_of_eq", "label_time"]
         for removed_param in hand_crafted_features:
@@ -252,7 +252,7 @@ if __name__ == "__main__":
                     - 
 
                 '''
-                #f.write(removed_param + "test: "+ str(test_acc) + "; time: " + str(done_model))
+                f.write(removed_param + "test: "+ str(test_acc) + "; time: " + str(done_model))
                 f.write("------------") 
             break
         #features[removed_param] = taken_out
