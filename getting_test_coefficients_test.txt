@@ -1,0 +1,14 @@
+<bound method NDFrame.head of                      Coefficients
+func_dec: security       2.615103
+func_dec: rtl92e         1.829844
+func_dec: nilfs          1.612181
+func_dec: ovl            1.559037
+func_dec: virtf          1.476704
+...                           ...
+func_dec: mlx4          -2.005992
+func_dec: i40e          -2.201284
+func_dec: ib            -2.292295
+func_dec: mlx5          -2.543212
+func_dec: ieee80211     -2.793798
+
+[10950 rows x 1 columns]>
