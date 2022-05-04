@@ -82,7 +82,7 @@ def data_pp(data, body):
             #for testing 
             location += 1
             print(location)
-            if location == 100:
+            if location == 10000:
               break
         #print(prototypes)
         le = LabelEncoder()
@@ -130,6 +130,7 @@ def split_data(xs):
     #del f_test["lemmatized_bow"]
     #f_train["func_col"] = f_train_bow
     y_train_temp = f_train.pop("immutable").values
+    print("testing")
     get_coeff(f_train, y_train_temp)
     f_train["immutable"] = y_train_temp
     #pd.options.display.max_colwidth = 200
@@ -151,6 +152,8 @@ def get_coeff(x_train, y_train):
     coefs = pd.DataFrame( model.coef_[0],columns=['Coefficients'], index=x_train.columns)
     coefs = coefs.sort_values(by = ["Coefficients"], ascending=False)
     print(coefs.head)
+    with open("getting_test_coefficients_test.txt", "w") as f:
+        f.write(str(coefs.head))
     coefs.to_csv("ranked_coefs_LogReg.csv")
 
 '''
@@ -177,7 +180,7 @@ if __name__ == "__main__":
     loading_data_in = datetime.now()
     #preprocessed = data_pp("../various_data/full_shuffle_labeled.csv", False)
     #the below is for implementing checks of the body features generated, so far performing worse
-    preprocessed = data_pp("../various_data/temp_final_labeled_body_shuffled.csv", True)
+    preprocessed = data_pp("../temp_final_labeled_body_shuffled.csv", True)
     features = pd.DataFrame(preprocessed)
     
     with open("getting_test_.txt", "w") as f: 
