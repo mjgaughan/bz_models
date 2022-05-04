@@ -1,1 +1,0 @@
-prep time: 0:46:01.823761SGDClassifierfunc_return_valuetest: 0.8152076962283384; time: 0:00:00.761522------------Perceptronfunc_return_valuetest: 0.8161952089704383; time: 0:00:00.430668------------LogisticRegressionfunc_return_valuetest: 0.8329510703363915; time: 0:02:32.190665------------
