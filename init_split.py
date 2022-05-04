@@ -82,8 +82,8 @@ def data_pp(data, body):
             #for testing 
             location += 1
             print(location)
-            if location == 10000:
-              break
+            #if location == 100:
+            #  break
         #print(prototypes)
         le = LabelEncoder()
         le.fit(return_values)
